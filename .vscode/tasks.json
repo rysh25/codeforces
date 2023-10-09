@@ -9,10 +9,10 @@
                 "-std=c++17",
                 "-stdlib=libc++",
                 "-fsanitize=address",
-                "-fsanitize=undefined",
-                "-fsanitize=bounds",
                 "-fno-omit-frame-pointer",
+                "-O0",
                 "-g",
+                "--debug",
                 "${file}",
                 "-o",
                 "${fileDirname}/out/${fileBasenameNoExtension}"
@@ -36,7 +36,10 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-fsanitize=address",
+                "-fsanitize=undefined",
+                "-fsanitize=bounds",
                 "-fno-omit-frame-pointer",
+                "-O0",
                 "-g",
                 "${file}",
                 "-o",
