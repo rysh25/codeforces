@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <set>
@@ -6,6 +7,7 @@
 #include <map>
 #include <unordered_map>
 #include <queue>
+#include <tuple>
 #include <cmath>
 #include <algorithm>
 
@@ -17,23 +19,24 @@ using namespace std;
 #define rep1(i, n) for (int i = 1; i < (int)(n); i++)
 using ll = long long;
 
-double dist(pair<int, int> a, pair<int, int> b)
+long double dist(pair<int, int> a, pair<int, int> b)
 {
-    return sqrt(pow(a.first - b.first, 2) + pow(a.second - b.second, 2));
+    return hypot(a.first - b.first, a.second - b.second);
 }
 
 void solve()
 {
     pair<int, int> O(0, 0);
     pair<int, int> P, A, B;
+
     cin >> P.first >> P.second >> A.first >> A.second >> B.first >> B.second;
 
-    double dPA = dist(P, A);
-    double dPB = dist(P, B);
-    double dOA = dist(O, A);
-    double dOB = dist(O, B);
-    double dOP = dist(O, P);
-    double dAB = dist(A, B);
+    long double dPA = dist(P, A);
+    long double dPB = dist(P, B);
+    long double dOA = dist(O, A);
+    long double dOB = dist(O, B);
+    long double dOP = dist(O, P);
+    long double dAB = dist(A, B);
 
     // cout << "dPA=" << dPA << ", dPB=" << dPB << endl;
     // cout << "dOA=" << dOA << ", dOB=" << dOB << ", dOP=" << dOP << endl;
@@ -42,36 +45,31 @@ void solve()
     if (dPA <= dPB &&
         dOA <= dOB)
     {
-        // 両方とも A が近いなら その遠い方
-        cout << (dPA <= dOA ? dOA : dPA) << endl;
+        // O P ともに、 A が近いなら そのうちの距離が長い方
+        // cout << "Case I" << endl;
+        cout << setprecision(16) << max(dPA, dOA) << endl;
     }
-    else if (dPA <= dPB &&
-             dOA <= dOB)
+    else if (dPB <= dPA &&
+             dOB <= dOA)
     {
-        // 両方とも B が近い その遠い方
-        cout << (dPB <= dOB ? dOB : dPB) << endl;
+        // O P ともに、B が近い そのうちの距離が長い方
+        // cout << "Case II" << endl;
+        cout << setprecision(16) << max(dPB, dOB) << endl;
     }
     else
     {
-        double dist_min_p_light = dPA < dPB ? dPA : dPB;
-        double dist_min_o_light = dOA < dOB ? dOA : dOB;
+        // O P がそれぞれ、A B のどちらかに近い場合
+        // O P それぞれから、距離の近いランタンのうちの距離が長い方
+        long double dO = min(dOA, dOB);
+        long double dP = min(dPA, dPB);
+        long double dL = max(dO, dP);
 
-        double half_dAB = dAB / 2;
+        // それが、A B 間の距離の半分より短いなら光が重なっていないので、距離が長い方
+        // cout << "Case III" << endl;
+        // cout << "dL=" << dL << ", dAB/2=" << dAB / 2.0 << endl;
 
-        if (dist_min_p_light <= half_dAB &&
-            dist_min_o_light <= half_dAB)
-        {
-            // 両方が A と B の間を照らした場合に含まれるなら
-            cout << half_dAB << endl;
-        }
-        else
-        {
-            double l = (dist_min_p_light <= dist_min_o_light ? dist_min_o_light : dist_min_p_light);
-            cout << l << endl;
-        }
+        cout << setprecision(16) << max(dL, dAB / 2.0) << endl;
     }
-
-    cout << "dist_min_p_light=" << dist_min_p_light << ", dist_min_o_light=" << dist_min_o_light << endl;
 }
 
 int main()
