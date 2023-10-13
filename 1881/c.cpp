@@ -36,10 +36,10 @@ void solve()
         {
 
             vector<int> v(4);
-            v[0] = matrix[i][j] - 'a';
-            v[1] = matrix[n - j - 1][i] - 'a';
-            v[2] = matrix[n - i - 1][n - j - 1] - 'a';
-            v[3] = matrix[j][n - i - 1] - 'a';
+            v[0] = matrix[i][j];
+            v[1] = matrix[n - j - 1][i];
+            v[2] = matrix[n - i - 1][n - j - 1];
+            v[3] = matrix[j][n - i - 1];
             int mx = max(max(v[0], v[1]), max(v[2], v[3]));
             for (int k = 0; k < 4; k++)
             {
